@@ -1,6 +1,6 @@
-IBANGenerator
+IBANCalculator
 ====================
-Go [http://eun.github.io/IBANGenerator](http://eun.github.io/IBANGenerator).
+Go to [http://eun.github.io/IBANCalculator](http://eun.github.io/IBANCalculator).
 
 Changelog
 =========
