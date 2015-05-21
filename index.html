@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="author" content="Eun"/>
+		<meta name="keywords" content="IBAN, IBAN Calculator, Banking, Open Source, GitHub, Eun"/>
+		<meta name="description" content="Calculate your IBAN"/>
+		<title>IBAN Calculator</title>
+		<script type="text/javascript">
+			function pad(num, size) {
+				var s = num+"";
+				while (s.length < size)
+					s = "0" + s;
+				return s;
+			}
+
+			function countryToNum(country) {
+				var out = "";
+				country = country.toUpperCase();
+				for (var i = 0; i < country.length; i++) {
+					out += (country.charCodeAt(i) - 55).toString();
+				}
+				return pad(out, 2);
+			}
+
+			function mod97(digitString) {
+				var m = 0;
+				for (var i = 0; i < digitString.length; ++i) {
+					m = ((m * 10) + parseInt(digitString.charAt(i), 10)) % 97;
+				}
+				return m;
+			}
+
+			function format(str)
+			{
+				var out = "";
+				for (var i = 0; i < str.length; i++) {
+					out += str[i];
+					if ((i+1) % 4 == 0 && i+1 < str.length)
+						out += " ";
+				}
+				return out;
+			}
+			function calculate() {
+				var country = document.getElementById("country").value;
+				var number = pad(document.getElementById("number").value, 10);
+				var code = pad(document.getElementById("code").value, 8);
+				var checksum = 98 - mod97(code + number + countryToNum(country) + "00");
+				document.getElementById("iban").value = country + " " + checksum + " " + format(code) + " " + format(number);
+			}
+			function validate(evt) {
+				var theEvent = evt || window.event;
+				var key = theEvent.keyCode || theEvent.which;
+				key = String.fromCharCode(key);
+				var regex = /[0-9]|\./;
+				if (!regex.test(key)) {
+					theEvent.returnValue = false;
+					if (theEvent.preventDefault) {
+						theEvent.preventDefault();
+					}
+				}
+			}
+		</script>
+		<link rel="stylesheet" href="style.css">
+		<link rel="stylesheet" href="gh-fork-ribbon.css">
+		<!--[if lt IE 9]>
+			<link rel="stylesheet" href="gh-fork-ribbon.ie.css">
+		<![endif]-->
+		<noscript>
+			<style type="text/css">
+				div.content form
+				{
+					display: none;
+				}
+			</style>
+		</noscript>
+	</head>
+	<body>
+		<div class="content">
+			<div class="github-fork-ribbon-wrapper right">
+				<div class="github-fork-ribbon">
+			    	<a href="https://github.com/Eun/IBANCalculator">Fork me on GitHub</a>
+			    </div>
+			</div>
+			<h1>IBAN Calculator</h1>
+			<h2>What is this?</h2>
+			<p>This allows you to calculate your IBAN by using your country code, bank account and bank code number.</p>
+			<h2>Calculator</h2>
+			<noscript>
+				<p>This application needs JavaScript!</p>
+				<p>To use this application you need to enable JavaScript in your browser!</p>
+			</noscript>
+			<form accept-charset="UTF-8" onsubmit="return false">
+				<label for="country">Country</label>
+				<select id="country" onchange="calculate()">
+					<option value="AD">AD: Andorra</option>
+					<option value="AL">AL: Albania</option>
+					<option value="AT">AT: Austria</option>
+					<option value="BA">BA: Bosnia and Herzegovina</option>
+					<option value="BE">BE: Belgium</option>
+					<option value="BG">BG: Bulgaria</option>
+					<option value="CH">CH: Switzerland</option>
+					<option value="CY">CY: Cyprus</option>
+					<option value="CZ">CZ: Czech Republic</option>
+					<option value="DE">DE: Germany</option>
+					<option value="DK">DK: Denmark</option>
+					<option value="EE">EE: Estonia</option>
+					<option value="ES">ES: Spain</option>
+					<option value="FI">FI: Finland</option>
+					<option value="FO">FO: Faroe Islands</option>
+					<option value="FR">FR: France</option>
+					<option value="GB">GB: United Kingdom</option>
+					<option value="GE">GE: Georgia</option>
+					<option value="GI">GI: Gibraltar</option>
+					<option value="GL">GL: Greenland</option>
+					<option value="GR">GR: Greece</option>
+					<option value="HR">HR: Croatia</option>
+					<option value="HU">HU: Hungary</option>
+					<option value="IE">IE: Ireland</option>
+					<option value="IL">IL: Israel</option>
+					<option value="IS">IS: Iceland</option>
+					<option value="IT">IT: Italy</option>
+					<option value="KW">KW: Kuwait</option>
+					<option value="KZ">KZ: Kazakhstan</option>
+					<option value="LB">LB: Lebanon</option>
+					<option value="LI">LI: Liechtenstein</option>
+					<option value="LT">LT: Lithuania</option>
+					<option value="LU">LU: Luxembourg</option>
+					<option value="LV">LV: Latvia</option>
+					<option value="MC">MC: Monaco</option>
+					<option value="ME">ME: Montenegro</option>
+					<option value="MK">MK: Macedonia</option>
+					<option value="MR">MR: Mauritania</option>
+					<option value="MT">MT: Malta</option>
+					<option value="MU">MU: Mauritius</option>
+					<option value="NL">NL: Netherlands</option>
+					<option value="NO">NO: Norway</option>
+					<option value="PL">PL: Poland</option>
+					<option value="PT">PT: Portugal</option>
+					<option value="RO">RO: Romania</option>
+					<option value="RS">RS: Serbia</option>
+					<option value="SA">SA: Saudi Arabia</option>
+					<option value="SE">SE: Sweden</option>
+					<option value="SI">SI: Slovenia</option>
+					<option value="SK">SK: Slovak Republic</option>
+					<option value="SM">SM: San Marino</option>
+					<option value="TN">TN: Tunisia</option>
+					<option value="TR">TR: Turkey</option>
+				</select>
+				<label for="number">Bank Account Number</label>
+				<input type="text" id="number" placeholder="Bank Account Number" onkeyup="calculate()" onkeypress="validate(event)" maxlength="10" />
+				<label for="code">Bank Code</label>
+				<input type="text" id="code" placeholder="Bank Code" onkeyup="calculate()" onkeypress="validate(event)" maxlength="8" />
+				<h3>IBAN</h3>
+				<input type="text" id="iban" placeholder="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"/>
+			</form>
+
+			<h2>Security Notice</h2>
+			<p>The calculation is completly processed on client side, no data is send to any server.</p>
+		</div>
+	</body>
+</html>
