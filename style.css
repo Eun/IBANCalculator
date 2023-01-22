@@ -6,7 +6,7 @@ body
 div.content
 {
     margin: 0 auto 0 auto;
-    width: 50rem;
+    width: 40rem;
     background: #cdcdcd;
     border: 1px solid #cccccc;
     border-radius: 1em;
@@ -28,7 +28,7 @@ div.content h2, div.content h3
 }
 
 
-div.content form input[type=text], div.content form select, div.content form label
+div.content form input, div.content form select, div.content form label
 {
     width: 100%;
     margin: 0em 0 .5em 0;
@@ -56,7 +56,7 @@ div.content form label
     padding: 0;
 }
 
-@media (max-width: 60rem) {
+@media (max-width: 40rem) {
     div.content
     {
         width: 100%;
